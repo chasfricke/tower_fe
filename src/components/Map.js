@@ -17,7 +17,6 @@ export class GoogleMap extends Component {
                 position   
             )
         })
-        
         return (
             <Marker position />
         )
