@@ -4,13 +4,28 @@ import React, { Component } from 'react'
 export class GoogleMap extends Component {
     constructor (props) {
         super(props)
-        this.state = []
+        this.state = {}
     }
 
-    renderMarkers () {
-        console.log(this.props.locations)
-        return <Marker position={{lat: 39.731214, lng: -104.887431}} />    
+    renderMarkers = () => {
+        const locations = this.props.locations
+        locations.map(location => {
+            const latitude = location.latitude
+            const longitude = location.longitude
+            const position = `position={{ lat: ${latitude}, lng: ${longitude} }}`
+            return (
+                position   
+            )
+        })
+        
+        return (
+            <Marker position />
+        )
     }
+    
+
+    
+
 
     render () {
         return (
@@ -21,7 +36,9 @@ export class GoogleMap extends Component {
                     ControlPosition="BOTTOM_LEFT"
                     initialCenter={{ lat: 39.731214, lng: -104.887431 }}
                     containerStyle={{height: '50vh', width: '100vw'}}>
+                    
                     {this.renderMarkers()}
+                    
                 </Map>
             </div>
         ) 
