@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import GoogleMap from "./components/Map"
-
+import GoogleMap from './components/Map';
+import LocationList from './components/LocationList';
 
 
 
@@ -30,6 +30,7 @@ class App extends Component {
           <h1>S&K Market Map</h1>
         </header>
         <GoogleMap locations={this.state.locations} />
+        <LocationList locations={this.state.locations} />
       </div>
     );
   }

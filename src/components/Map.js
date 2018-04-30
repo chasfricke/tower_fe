@@ -7,37 +7,19 @@ export class GoogleMap extends Component {
         this.state = {}
     }
 
-    renderMarkers = () => {
-        const locations = this.props.locations
-        locations.map(location => {
-            const latitude = location.latitude
-            const longitude = location.longitude
-            const position = `position={{ lat: ${latitude}, lng: ${longitude} }}`
-            return (
-                position   
-            )
-        })
-        return (
-            <Marker position />
-        )
-    }
-    
-
-    
-
 
     render () {
         return (
             <div className="mapContainer">
                 <Map className="Google-Map"
                     google={this.props.google}
-                    zoom={14}
+                    zoom={12}
                     ControlPosition="BOTTOM_LEFT"
                     initialCenter={{ lat: 39.731214, lng: -104.887431 }}
                     containerStyle={{height: '50vh', width: '100vw'}}>
-                    
-                    {this.renderMarkers()}
-                    
+                    {this.props.locations.map(location => {
+                        return <Marker position={{lat: location.latitude, lng: location.longitude}} />
+                    })}
                 </Map>
             </div>
         ) 
