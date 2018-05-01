@@ -75,9 +75,14 @@ h4 {
   padding-top: 50vh;
 }
 
-.locations-list li {
+.location-card {
   border: solid 1px;
   border-color: lightgray;
   padding: 0.5rem;
   margin: 0.5rem;
+}
+
+.location-card:hover {
+  border: solid 2px;
+  border-color: lightgray;
 }
