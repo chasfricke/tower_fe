@@ -33,21 +33,18 @@ export class LocationList extends Component {
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value})
         event.preventDefault();
-
     } 
+
+    //NOT WORKING
     submitLocation = () => {
-        const body = {
-            name: this.state.name,
-            business_type: this.state.business_type,
-            address: this.state.address
-        }
-        fetch('https://tower-be.herokuapp.com/locations/' + this.state.id, {
-            body: JSON.stringify(body),
-            method: 'UPDATE',
+        return fetch('https://tower-be.herokuapp.com/locations/' + this.state.id, {
+            method: 'PUT',
+            body: JSON.stringify(this.state),
             headers: new Headers({
                  'Content-Type': 'application/json'
             })
-        }).catch(error => console.error('Error', error))
+        }).then(response => response.json())
+        .catch(error => console.error('Error', error))
     }
 
 
