@@ -56,6 +56,11 @@ h1 {
   font-weight: 500;
 }
 
+h3 {
+  font-size: 1.75rem;
+  font-weight: 500;
+}
+
 h4 {
   font-size: 1.25rem;
   font-weight: 500;
@@ -85,4 +90,31 @@ h4 {
 .location-card:hover {
   border: solid 2px;
   border-color: lightgray;
+}
+
+.location-form-container {
+  padding: 1rem;
+  border: solid 1px lightgray;
+  margin: 0.5rem;
+  width: 25rem;
+}
+
+.location-form-container h3 {
+  text-align: center;
+}
+
+.location-form {
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.location-form input {
+  width: 20rem;
+  margin-bottom: 0.75rem;
+}
+
+.location-form button {
+  width: 5rem;
 }

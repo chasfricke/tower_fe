@@ -5,8 +5,8 @@ export class LocationList extends Component {
         super(props)
         this.state = {}
 
+        this.populateUpdateForm = this.populateUpdateForm.bind(this)
         this.updateLocation = this.updateLocation.bind(this)
-        this.submitLocation = this.submitLocation.bind(this)
     }
 
     deleteLocation = (location) => {
@@ -20,8 +20,7 @@ export class LocationList extends Component {
         } 
     }
 
-    updateLocation = (location) => {
-        console.log("update clicked " + location.name + location.id)
+    populateUpdateForm = (location) => {
         this.setState({
             name: location.name,
             id: location.id,
@@ -35,10 +34,22 @@ export class LocationList extends Component {
         event.preventDefault();
     } 
 
-    //NOT WORKING
-    submitLocation = () => {
+    updateLocation = (event) => {
+        event.preventDefault()
         return fetch('https://tower-be.herokuapp.com/locations/' + this.state.id, {
             method: 'PUT',
+            body: JSON.stringify(this.state),
+            headers: new Headers({
+                 'Content-Type': 'application/json'
+            })
+        }).then(response => response.json())
+        .catch(error => console.error('Error', error))
+    }
+
+    createLocation = (event) => {
+        event.preventDefault()
+        return fetch('https://tower-be.herokuapp.com/locations/', {
+            method: 'POST',
             body: JSON.stringify(this.state),
             headers: new Headers({
                  'Content-Type': 'application/json'
@@ -60,20 +71,39 @@ export class LocationList extends Component {
                             <p>{location.business_type}</p>
                             <p>{location.address}</p>
                             <button onClick={() => this.deleteLocation(location)}>Delete</button>     
-                            <button onClick={() => this.updateLocation(location)}>Update</button>                     
+                            <button onClick={() => this.populateUpdateForm(location)}>Update</button>                     
                         </li>
                     )
                 })}
             </ul>
-            <form onSubmit={this.submitLocation}>
-                <label htmlFor="name">Name</label>
-                <input type="text" id="name" name="name" value={this.state.name} onChange={this.handleChange} required />
-                <label htmlFor="business_type">Business Type</label>
-                <input type="text" name="business_type" value={this.state.business_type} onChange={this.handleChange} required />
-                <label htmlFor="address">Address</label>
-                <input type="text" name="address" value={this.state.address} onChange={this.handleChange} required /> 
-                <button type="submit">Submit</button>
-            </form>
+            <div className="location-form-container">
+                <h3>Update Location</h3>
+                <form className="location-form" onSubmit={this.updateLocation}>
+                    <label htmlFor="name">Name</label>
+                    <input type="text" id="name" name="name" value={this.state.name} onChange={this.handleChange} required />
+                    <label htmlFor="business_type">Business Type</label>
+                    <input type="text" name="business_type" value={this.state.business_type} onChange={this.handleChange} required />
+                    <label htmlFor="address">Address</label>
+                    <input type="text" name="address" value={this.state.address} onChange={this.handleChange} required /> 
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+            <div className="location-form-container">
+                <h3>New Location</h3>
+                <form className="location-form" onSubmit={this.createLocation}>
+                    <label htmlFor="name">Name</label>
+                    <input type="text" id="name" name="name"  onChange={this.handleChange} required />
+                    <label htmlFor="business_type">Business Type</label>
+                    <input type="text" name="business_type" onChange={this.handleChange} required />
+                    <label htmlFor="address">Address</label>
+                    <input type="text" name="address" onChange={this.handleChange} required /> 
+                    <label htmlFor="latitude">Latitude</label>
+                    <input type="float" name="latitude" onChange={this.handleChange} required /> 
+                    <label htmlFor="longitude">Longitude</label>
+                    <input type="float" name="longitude" onChange={this.handleChange} required /> 
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
             </div>
 
         ) 
