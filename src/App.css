@@ -82,14 +82,15 @@ h4 {
 
 .location-card {
   border: solid 2px;
-  border-color: rgb(134, 134, 134);
+  border-color: lightgray;
   padding: 0.5rem;
   margin: 0.5rem;
 }
 
 .location-card:hover {
   border: solid 2px;
-  border-color: lightgray;
+  
+  border-color: rgb(134, 134, 134);
 }
 
 .location-form-container {

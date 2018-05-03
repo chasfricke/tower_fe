@@ -68,6 +68,36 @@ export class LocationList extends Component {
         })
     }
 
+    deleteNote = (detail) => {
+        if (window.confirm("Delete note: " + detail.comment)){
+            return fetch('https://tower-be.herokuapp.com/dropoff_details/' + detail.id, {
+                method: 'DELETE',
+                headers: new Headers({
+                'Content-Type': 'application/json'
+                })
+            }).catch(error => console.error('Error', error))
+        } 
+    }
+
+    createNote = (event) => {
+        event.preventDefault()
+        const date = new Date().toJSON().slice(0,10)
+        this.setState({"visit_date": date })
+        return fetch('https://tower-be.herokuapp.com/dropoff_details/', {
+            method: 'POST',
+            body: JSON.stringify({
+                foreign_key: this.state.foreign_key,
+                comment: this.state.comment,
+                staff_name: this.state.staff_name,
+                visit_date: date
+            }),
+            headers: new Headers({
+                 'Content-Type': 'application/json'
+            })
+        }).then(response => response.json())
+        .catch(error => console.error('Error', error))
+    }
+
     render () {
         return (
             <div>
@@ -88,6 +118,7 @@ export class LocationList extends Component {
                                             <p>{detail.visit_date.slice(0,10)}</p>
                                             <p>{detail.comment}</p>
                                             <p> - {detail.staff_name}</p>
+                                            <button onClick={() => this.deleteNote(detail)}>Delete</button>
                                         </div>
                                     )                                      
                                 }
@@ -129,11 +160,11 @@ export class LocationList extends Component {
                 <h3>Add Note</h3>
                 <h4>{this.state.name}</h4>
                 <p>{this.state.address}</p>
-                <form onSubmit={() => this.createNote(this.state.foreign_key)}>
+                <form onSubmit={this.createNote}>
                     <label htmlFor="comment">Comment</label>
-                    <input type="textarea" name="comment" required />
+                    <textarea cols="50" rows="10" name="comment" onChange={this.handleChange} required />
                     <label htmlFor="staff_name">Your Name</label>
-                    <input type="text" name="staff_name" required />
+                    <input type="text" name="staff_name" onChange={this.handleChange} required />
                     <button type="submit">Submit</button>
                 </form>   
             </div>
