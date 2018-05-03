@@ -48,6 +48,8 @@ export class LocationList extends Component {
 
     createLocation = (event) => {
         event.preventDefault()
+        const date = new Date().toJSON().slice(0,10)
+        this.setState({"first_visit": date })
         return fetch('https://tower-be.herokuapp.com/locations/', {
             method: 'POST',
             body: JSON.stringify(this.state),
