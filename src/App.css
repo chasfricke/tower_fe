@@ -124,9 +124,28 @@ h4 {
   padding: 0.5rem;
   border: solid 1px lightgray;
   margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
   background-color: rgb(238, 237, 237);
 }
 
 .message p {
   padding-bottom: 0.25rem;
+}
+
+.note-forms-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.location-forms-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.location-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: solid 1px lightgray;
+  margin-top: 0.5rem;
 }

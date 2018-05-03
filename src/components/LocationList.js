@@ -25,7 +25,9 @@ export class LocationList extends Component {
             name: location.name,
             id: location.id,
             business_type: location.business_type,
-            address: location.address
+            address: location.address,
+            latitude: location.latitude,
+            longitude: location.longitude
         })
     }
 
@@ -64,7 +66,7 @@ export class LocationList extends Component {
         this.setState({
             name: location.name,
             foreign_key: location.id,
-            address: location.address
+            address: location.address,
         })
     }
 
@@ -98,10 +100,12 @@ export class LocationList extends Component {
         } 
     }
 
-    populateNoteUpdateForm = (detail) => {
+    populateNoteUpdateForm = (detail, location) => {
         this.setState({
             id: detail.id,
             foreign_key: detail.foreign_key,
+            name: location.name,
+            address: location.address,
             comment: detail.comment,
             staff_name: detail.staff_name,
             visit_date: detail.visit_date.slice(0,10)
@@ -141,6 +145,7 @@ export class LocationList extends Component {
                             <p>{location.address}</p>
                             <button onClick={() => this.deleteLocation(location)}>Delete</button>     
                             <button onClick={() => this.populateUpdateForm(location)}>Update</button>
+                            <hr/>
                             {this.props.dropoff_details.map(detail => {
                                 if (location.id === detail.foreign_key) {
                                     return (
@@ -149,7 +154,7 @@ export class LocationList extends Component {
                                             <p>{detail.comment}</p>
                                             <p> - {detail.staff_name}</p>
                                             <button onClick={() => this.deleteNote(detail)}>Delete</button>
-                                            <button onClick={() => this.populateNoteUpdateForm(detail)}>Update</button>
+                                            <button onClick={() => this.populateNoteUpdateForm(detail, location)}>Update</button>
                                         </div>
                                     )                                      
                                 }
@@ -159,20 +164,9 @@ export class LocationList extends Component {
                     )
                 })}
             </ul>
+            <div className="location-forms-container">
             <div className="location-form-container">
-                <h3>Update Location</h3>
-                <form className="location-form" onSubmit={this.updateLocation}>
-                    <label htmlFor="name">Name</label>
-                    <input type="text" id="name" name="name" value={this.state.name} onChange={this.handleChange} required />
-                    <label htmlFor="business_type">Business Type</label>
-                    <input type="text" name="business_type" value={this.state.business_type} onChange={this.handleChange} required />
-                    <label htmlFor="address">Address</label>
-                    <input type="text" name="address" value={this.state.address} onChange={this.handleChange} required /> 
-                    <button type="submit">Submit</button>
-                </form>
-            </div>
-            <div className="location-form-container">
-                <h3>New Location</h3>
+                <h3>Add Location</h3>
                 <form className="location-form" onSubmit={this.createLocation}>
                     <label htmlFor="name">Name</label>
                     <input type="text" id="name" name="name"  onChange={this.handleChange} required />
@@ -188,22 +182,45 @@ export class LocationList extends Component {
                 </form>
             </div>
             <div className="location-form-container">
+                <h3>Update Location</h3>
+                <form className="location-form" onSubmit={this.updateLocation}>
+                    <label htmlFor="name">Name</label>
+                    <input type="text" id="name" name="name" value={this.state.name} onChange={this.handleChange} required />
+                    <label htmlFor="business_type">Business Type</label>
+                    <input type="text" name="business_type" value={this.state.business_type} onChange={this.handleChange} required />
+                    <label htmlFor="address">Address</label>
+                    <input type="text" name="address" value={this.state.address} onChange={this.handleChange} required /> 
+                    <label htmlFor="latitude">Latitude</label>
+                    <input type="float" name="latitude" value={this.state.latitude} onChange={this.handleChange} required /> 
+                    <label htmlFor="longitude">Longitude</label>
+                    <input type="float" name="longitude"value={this.state.longitude} onChange={this.handleChange} required />
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+            
+            </div>
+            <div className="note-forms-container">
+            <div className="location-form-container">
                 <h3>Add Note</h3>
-                <h4>{this.state.name}</h4>
-                <p>{this.state.address}</p>
-                <form onSubmit={this.createNote}>
+                <div className="location-details">
+                    <h4>{this.state.name}</h4>
+                    <p>{this.state.address}</p>
+                </div>
+                <form className="location-form" onSubmit={this.createNote}>
                     <label htmlFor="comment">Comment</label>
                     <textarea cols="50" rows="10" name="comment" onChange={this.handleChange} required />
-                    <label htmlFor="staff_name">Your Name</label>
+                    <label htmlFor="staff_name">Staff Name</label>
                     <input type="text" name="staff_name" onChange={this.handleChange} required />
                     <button type="submit">Submit</button>
                 </form>   
             </div>
             <div className="location-form-container">
                 <h3>Update Note</h3>
-                <h4>{this.state.name}</h4>
-                <p>{this.state.address}</p>
-                <form onSubmit={this.updateNote}>
+                <div className="location-details">
+                    <h4>{this.state.name}</h4>
+                    <p>{this.state.address}</p>
+                </div>
+                <form className="location-form" onSubmit={this.updateNote}>
                     <label htmlFor="visit_date">Visit Date</label>
                     <input type="text" name="visit_date" value={this.state.visit_date} onChange={this.handleChange} required />
                     <label htmlFor="foreign_key">Location ID</label>
@@ -214,6 +231,7 @@ export class LocationList extends Component {
                     <input type="text" name="staff_name" value={this.state.staff_name} onChange={this.handleChange} required />
                     <button type="submit">Submit</button>
                 </form>   
+            </div>
             </div>
             </div>
 
