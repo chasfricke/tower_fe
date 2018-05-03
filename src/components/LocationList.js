@@ -60,6 +60,14 @@ export class LocationList extends Component {
         .catch(error => console.error('Error', error))
     }
 
+    populateNoteForm = (location) => {
+        this.setState({
+            name: location.name,
+            foreign_key: location.id,
+            address: location.address
+        })
+    }
+
     render () {
         return (
             <div>
@@ -83,7 +91,8 @@ export class LocationList extends Component {
                                         </div>
                                     )                                      
                                 }
-                            })}                     
+                            })}
+                            <button onClick={() => this.populateNoteForm(location)}>Add Note</button>                 
                         </li>
                     )
                 })}
@@ -115,6 +124,18 @@ export class LocationList extends Component {
                     <input type="float" name="longitude" onChange={this.handleChange} required /> 
                     <button type="submit">Submit</button>
                 </form>
+            </div>
+            <div className="location-form-container">
+                <h3>Add Note</h3>
+                <h4>{this.state.name}</h4>
+                <p>{this.state.address}</p>
+                <form onSubmit={() => this.createNote(this.state.foreign_key)}>
+                    <label htmlFor="comment">Comment</label>
+                    <input type="textarea" name="comment" required />
+                    <label htmlFor="staff_name">Your Name</label>
+                    <input type="text" name="staff_name" required />
+                    <button type="submit">Submit</button>
+                </form>   
             </div>
             </div>
 
