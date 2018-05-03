@@ -68,17 +68,6 @@ export class LocationList extends Component {
         })
     }
 
-    deleteNote = (detail) => {
-        if (window.confirm("Delete note: " + detail.comment)){
-            return fetch('https://tower-be.herokuapp.com/dropoff_details/' + detail.id, {
-                method: 'DELETE',
-                headers: new Headers({
-                'Content-Type': 'application/json'
-                })
-            }).catch(error => console.error('Error', error))
-        } 
-    }
-
     createNote = (event) => {
         event.preventDefault()
         const date = new Date().toJSON().slice(0,10)
@@ -97,6 +86,47 @@ export class LocationList extends Component {
         }).then(response => response.json())
         .catch(error => console.error('Error', error))
     }
+
+    deleteNote = (detail) => {
+        if (window.confirm("Delete note: " + detail.comment)){
+            return fetch('https://tower-be.herokuapp.com/dropoff_details/' + detail.id, {
+                method: 'DELETE',
+                headers: new Headers({
+                'Content-Type': 'application/json'
+                })
+            }).catch(error => console.error('Error', error))
+        } 
+    }
+
+    populateNoteUpdateForm = (detail) => {
+        this.setState({
+            id: detail.id,
+            foreign_key: detail.foreign_key,
+            comment: detail.comment,
+            staff_name: detail.staff_name,
+            visit_date: detail.visit_date.slice(0,10)
+        })
+    }
+
+    updateNote = (event) => {
+        event.preventDefault()
+        
+        return fetch('https://tower-be.herokuapp.com/dropoff_details/' + this.state.id, {
+            method: 'PUT',
+            body: JSON.stringify({
+                foreign_key: this.state.foreign_key,
+                comment: this.state.comment,
+                staff_name: this.state.staff_name,
+                visit_date: this.state.visit_date
+            }),
+            headers: new Headers({
+                 'Content-Type': 'application/json'
+            })
+        }).then(response => response.json())
+        .catch(error => console.error('Error', error))
+    }
+
+
 
     render () {
         return (
@@ -119,6 +149,7 @@ export class LocationList extends Component {
                                             <p>{detail.comment}</p>
                                             <p> - {detail.staff_name}</p>
                                             <button onClick={() => this.deleteNote(detail)}>Delete</button>
+                                            <button onClick={() => this.populateNoteUpdateForm(detail)}>Update</button>
                                         </div>
                                     )                                      
                                 }
@@ -165,6 +196,22 @@ export class LocationList extends Component {
                     <textarea cols="50" rows="10" name="comment" onChange={this.handleChange} required />
                     <label htmlFor="staff_name">Your Name</label>
                     <input type="text" name="staff_name" onChange={this.handleChange} required />
+                    <button type="submit">Submit</button>
+                </form>   
+            </div>
+            <div className="location-form-container">
+                <h3>Update Note</h3>
+                <h4>{this.state.name}</h4>
+                <p>{this.state.address}</p>
+                <form onSubmit={this.updateNote}>
+                    <label htmlFor="visit_date">Visit Date</label>
+                    <input type="text" name="visit_date" value={this.state.visit_date} onChange={this.handleChange} required />
+                    <label htmlFor="foreign_key">Location ID</label>
+                    <input type="text" name="foreign_key" value={this.state.foreign_key} onChange={this.handleChange} required />
+                    <label htmlFor="comment">Comment</label>
+                    <textarea cols="50" rows="10" name="comment" value={this.state.comment} onChange={this.handleChange} required />
+                    <label htmlFor="staff_name">Staff Name</label>
+                    <input type="text" name="staff_name" value={this.state.staff_name} onChange={this.handleChange} required />
                     <button type="submit">Submit</button>
                 </form>   
             </div>
