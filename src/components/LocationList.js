@@ -60,7 +60,6 @@ export class LocationList extends Component {
         .catch(error => console.error('Error', error))
     }
 
-
     render () {
         return (
             <div>
@@ -73,7 +72,18 @@ export class LocationList extends Component {
                             <p>{location.business_type}</p>
                             <p>{location.address}</p>
                             <button onClick={() => this.deleteLocation(location)}>Delete</button>     
-                            <button onClick={() => this.populateUpdateForm(location)}>Update</button>                     
+                            <button onClick={() => this.populateUpdateForm(location)}>Update</button>
+                            {this.props.dropoff_details.map(detail => {
+                                if (location.id === detail.foreign_key) {
+                                    return (
+                                        <div className="message">
+                                            <p>{detail.visit_date.slice(0,10)}</p>
+                                            <p>{detail.comment}</p>
+                                            <p> - {detail.staff_name}</p>
+                                        </div>
+                                    )                                      
+                                }
+                            })}                     
                         </li>
                     )
                 })}
