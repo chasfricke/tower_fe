@@ -138,28 +138,28 @@ export class LocationList extends Component {
             <ul className="locations-list">
                 {this.props.locations.map(location => {
                     return (  
-                        <li className="location-card">
+                        <li className="location-card" id={"location_" + location.id}>
                             <h4>{location.name}</h4>
                             <p>ID: {location.id}</p>
                             <p>{location.business_type}</p>
                             <p>{location.address}</p>
                             <button onClick={() => this.deleteLocation(location)}>Delete</button>     
-                            <button onClick={() => this.populateUpdateForm(location)}>Update</button>
+                            <button className="update-load-button" onClick={() => this.populateUpdateForm(location)}>Update</button>
                             <hr/>
                             {this.props.dropoff_details.map(detail => {
                                 if (location.id === detail.foreign_key) {
                                     return (
-                                        <div className="message">
+                                        <div className="message" id={"message_" + detail.id}>
                                             <p>{detail.visit_date.slice(0,10)}</p>
                                             <p>{detail.comment}</p>
                                             <p> - {detail.staff_name}</p>
-                                            <button onClick={() => this.deleteNote(detail)}>Delete</button>
+                                            <button className="delete-note-button" onClick={() => this.deleteNote(detail)}>Delete</button>
                                             <button onClick={() => this.populateNoteUpdateForm(detail, location)}>Update</button>
                                         </div>
                                     )                                      
                                 }
                             })}
-                            <button onClick={() => this.populateNoteForm(location)}>Add Note</button>                 
+                            <button className="add-note-button" onClick={() => this.populateNoteForm(location)}>Add Note</button>                 
                         </li>
                     )
                 })}
@@ -167,25 +167,25 @@ export class LocationList extends Component {
             <div className="location-forms-container">
             <div className="location-form-container">
                 <h3>Add Location</h3>
-                <form className="location-form" onSubmit={this.createLocation}>
-                    <label htmlFor="name">Name</label>
-                    <input type="text" id="name" name="name"  onChange={this.handleChange} required />
+                <form id="create-location-form" className="location-form" onSubmit={this.createLocation}>
+                    <label htmlFor="name">Business Name</label>
+                    <input type="text" id="create-location-name" name="name"  onChange={this.handleChange} required />
                     <label htmlFor="business_type">Business Type</label>
-                    <input type="text" name="business_type" onChange={this.handleChange} required />
+                    <input type="text" id="create-location-business_type" name="business_type" onChange={this.handleChange} required />
                     <label htmlFor="address">Address</label>
-                    <input type="text" name="address" onChange={this.handleChange} required /> 
+                    <input type="text" id="create-location-address" name="address" onChange={this.handleChange} required /> 
                     <label htmlFor="latitude">Latitude</label>
-                    <input type="float" name="latitude" onChange={this.handleChange} required /> 
+                    <input type="float" id="create-location-latitude" name="latitude" onChange={this.handleChange} required /> 
                     <label htmlFor="longitude">Longitude</label>
-                    <input type="float" name="longitude" onChange={this.handleChange} required /> 
-                    <button type="submit">Submit</button>
+                    <input type="float" id="create-location-longitude" name="longitude" onChange={this.handleChange} required /> 
+                    <button id="create-location-button" type="submit">Submit</button>
                 </form>
             </div>
             <div className="location-form-container">
                 <h3>Update Location</h3>
                 <form className="location-form" onSubmit={this.updateLocation}>
                     <label htmlFor="name">Name</label>
-                    <input type="text" id="name" name="name" value={this.state.name} onChange={this.handleChange} required />
+                    <input type="text" id="update-location-name" name="name" value={this.state.name} onChange={this.handleChange} required />
                     <label htmlFor="business_type">Business Type</label>
                     <input type="text" name="business_type" value={this.state.business_type} onChange={this.handleChange} required />
                     <label htmlFor="address">Address</label>
@@ -194,7 +194,7 @@ export class LocationList extends Component {
                     <input type="float" name="latitude" value={this.state.latitude} onChange={this.handleChange} required /> 
                     <label htmlFor="longitude">Longitude</label>
                     <input type="float" name="longitude"value={this.state.longitude} onChange={this.handleChange} required />
-                    <button type="submit">Submit</button>
+                    <button type="submit" id="update-location-button">Submit</button>
                 </form>
             </div>
             
@@ -206,7 +206,7 @@ export class LocationList extends Component {
                     <h4>{this.state.name}</h4>
                     <p>{this.state.address}</p>
                 </div>
-                <form className="location-form" onSubmit={this.createNote}>
+                <form className="location-form" id="create-note-form" onSubmit={this.createNote}>
                     <label htmlFor="comment">Comment</label>
                     <textarea cols="50" rows="10" name="comment" onChange={this.handleChange} required />
                     <label htmlFor="staff_name">Staff Name</label>
