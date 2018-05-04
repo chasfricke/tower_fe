@@ -18,7 +18,7 @@ export class GoogleMap extends Component {
                     initialCenter={{ lat: 39.731214, lng: -104.887431 }}
                     containerStyle={{height: '50vh', width: '100vw'}}>
                     {this.props.locations.map(location => {
-                        return <Marker position={{lat: location.latitude, lng: location.longitude}} />
+                        return <Marker key={location.name} position={{lat: location.latitude, lng: location.longitude}} />
                     })}
                 </Map>
             </div>

@@ -138,7 +138,7 @@ export class LocationList extends Component {
             <ul className="locations-list">
                 {this.props.locations.map(location => {
                     return (  
-                        <li className="location-card" id={"location_" + location.id}>
+                        <li key={"location_" + location.id} className="location-card" id={"location_" + location.id}>
                             <h4>{location.name}</h4>
                             <p>ID: {location.id}</p>
                             <p>{location.business_type}</p>
@@ -149,15 +149,15 @@ export class LocationList extends Component {
                             {this.props.dropoff_details.map(detail => {
                                 if (location.id === detail.foreign_key) {
                                     return (
-                                        <div className="message" id={"message_" + detail.id}>
+                                        <div className="message" key={"message_" + detail.id} id={"message_" + detail.id}>
                                             <p>{detail.visit_date.slice(0,10)}</p>
                                             <p>{detail.comment}</p>
                                             <p> - {detail.staff_name}</p>
                                             <button className="delete-note-button" onClick={() => this.deleteNote(detail)}>Delete</button>
                                             <button onClick={() => this.populateNoteUpdateForm(detail, location)}>Update</button>
                                         </div>
-                                    )                                      
-                                }
+                                    )                                     
+                                } else return null
                             })}
                             <button className="add-note-button" onClick={() => this.populateNoteForm(location)}>Add Note</button>                 
                         </li>
