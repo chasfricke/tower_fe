@@ -130,12 +130,45 @@ export class LocationList extends Component {
         .catch(error => console.error('Error', error))
     }
 
-
-
     render () {
         return (
             <div>
+           
             <ul className="locations-list">
+                <ul>
+                    <div className="selected-place-title">
+                        <h3>Selected Location</h3>
+                    </div>
+                    <li key={"location_" + this.props.selectedPlace.id} className="location-card" id={"location_" + this.props.selectedPlace.id}>
+                       
+                        <h4>{this.props.selectedPlace.name}</h4>
+                        <p>ID: {this.props.selectedPlace.id}</p>
+                        <p>{this.props.selectedPlace.business_type}</p>
+                        <p>{this.props.selectedPlace.address}</p>
+                        <button onClick={() => this.deleteLocation(this.props.selectedPlace)}>Delete</button> 
+                        <button className="update-load-button" onClick={() => this.populateUpdateForm(this.props.selectedPlace)}>Update</button>
+                        <hr/>
+                            {this.props.dropoff_details.map(detail => {
+                                if (this.props.selectedPlace.id === detail.foreign_key) {
+                                    return (
+                                        <div className="message" key={"message_" + detail.id} id={"message_" + detail.id}>
+                                            <p>{detail.visit_date.slice(0,10)}</p>
+                                            <p>{detail.comment}</p>
+                                            <p> - {detail.staff_name}</p>
+                                            <button className="delete-note-button" onClick={() => this.deleteNote(detail)}>Delete</button>
+                                            <button onClick={() => this.populateNoteUpdateForm(detail, this.props.selectedPlace)}>Update</button>
+                                        </div>
+                                    )                                     
+                                } else return null
+                            })}
+                            <button className="add-note-button" onClick={() => this.populateNoteForm(this.props.selectedPlace)}>Add Note</button>                 
+
+                    </li>
+                    
+                </ul>
+                <div className="selected-place-title">
+                        <h3>Other Locations</h3>
+                    </div>
                 {this.props.locations.map(location => {
                     return (  
                         <li key={"location_" + location.id} className="location-card" id={"location_" + location.id}>

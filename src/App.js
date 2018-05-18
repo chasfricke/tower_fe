@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import GoogleMap from './components/Map';
-import LocationList from './components/LocationList';
-
 
 
 class App extends Component {
@@ -37,8 +35,7 @@ class App extends Component {
         <header className="App-header">
           <h1>S&K Market Map</h1>
         </header>
-        <GoogleMap locations={this.state.locations} />
-        <LocationList locations={this.state.locations} dropoff_details={this.state.dropoff_details}/>
+        <GoogleMap locations={this.state.locations} dropoff_details={this.state.dropoff_details}/>
       </div>
     );
   }

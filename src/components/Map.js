@@ -1,5 +1,6 @@
 import { Map, Marker, GoogleApiWrapper, InfoWindow } from 'google-maps-react'
 import React, { Component } from 'react'
+import LocationList from './LocationList';
 
 export class GoogleMap extends Component {
     constructor (props) {
@@ -17,6 +18,10 @@ export class GoogleMap extends Component {
             activeMarker: marker,
             showingInfoWindow: true
         })
+        let locations = this.props.locations
+        let id = this.state.selectedPlace.id
+        const result = locations.filter(location => location.id === id);
+        this.setState({selectedPlace: result[0]})
     }
         
 
@@ -24,13 +29,18 @@ export class GoogleMap extends Component {
         if (this.state.showingInfoWindow) {
             this.setState({
               showingInfoWindow: false,
-              activeMarker: null
+              activeMarker: null,
+              selectedPlace: {}
             })
         } 
     }
 
-    onMoreInfoClick = () => {
-        console.log("more info")
+    onWindowClose = () => {
+        this.setState({
+            showingInfoWindow: false,
+            activeMarker: null,
+            selectedPlace: {}
+          })
     }
 
     render () {
@@ -44,11 +54,11 @@ export class GoogleMap extends Component {
                     containerStyle={{height: '50vh', width: '100vw'}}
                     onClick={this.onMapClicked}>
                     {this.props.locations.map(location => {
-                        return <Marker key={location.name} name={location.name} address={location.address} onClick={this.onMarkerClick} position={{lat: location.latitude, lng: location.longitude}} />
+                        return <Marker key={location.name} name={location.name} address={location.address} id={location.id} onClick={this.onMarkerClick} position={{lat: location.latitude, lng: location.longitude}} />
                     })}
 
                     <InfoWindow
-                        onOpen={this.onMoreInfoClick}
+                        onClose={this.onWindowClose}
                         marker={this.state.activeMarker}
                         visible={this.state.showingInfoWindow}>
                             <div>
@@ -57,6 +67,7 @@ export class GoogleMap extends Component {
                             </div>
                     </InfoWindow>
                 </Map>
+                <LocationList locations={this.props.locations} dropoff_details={this.props.dropoff_details} selectedPlace={this.state.selectedPlace} />
             </div>
         ) 
     }
