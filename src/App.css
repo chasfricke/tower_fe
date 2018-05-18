@@ -149,3 +149,9 @@ h4 {
   border: solid 1px lightgray;
   margin-top: 0.5rem;
 }
+
+.selected-place-title {
+  background-color: black;
+  color: white;
+  padding-left: 0.5rem;
+}
