@@ -102,6 +102,14 @@ h4 {
   /* border-color: rgb(134, 134, 134); */
 }
 
+.location-card h3 {
+  padding-bottom: 0.2rem;
+}
+
+.location-card p {
+  padding-bottom: 0.3rem;
+}
+
 .location-card-header {
   display: flex;
   flex-direction: row;
@@ -187,4 +195,12 @@ h4 {
   padding-bottom: 1rem;
   margin-top: 1rem;
   
+}
+
+.selection-detail h3 {
+  padding-bottom: 0.2rem;
+}
+
+.selection-detail p {
+  padding-bottom: 0.3rem;
 }

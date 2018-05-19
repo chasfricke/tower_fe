@@ -157,7 +157,7 @@ export class LocationList extends Component {
                         <h3>{this.props.selectedPlace.name}</h3>
                         <p>ID: {this.props.selectedPlace.id}</p>
                     </div>
-                    <p>{this.props.selectedPlace.address}</p>
+                    <p className="address">{this.props.selectedPlace.address}</p>
                     <p>{this.props.selectedPlace.business_type}</p>
                     
                     <button onClick={() => this.deleteLocation(this.props.selectedPlace)}>Delete</button> 
@@ -193,8 +193,10 @@ export class LocationList extends Component {
                 {this.props.locations.map(location => {
                     return (  
                         <li key={"location_" + location.id} className="location-card" id={"location_" + location.id}>
-                            <h4>{location.name}</h4>
-                            <p>ID: {location.id}</p>
+                            <div className="location-card-header">
+                                <h3>{location.name}</h3>
+                                <p>ID: {location.id}</p>
+                            </div>
                             <p>{location.business_type}</p>
                             <p>{location.address}</p>
                             <button onClick={() => this.deleteLocation(location)}>Delete</button>     
