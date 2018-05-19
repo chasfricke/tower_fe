@@ -1,16 +1,28 @@
 import React, { Component } from 'react';
+import ReactModal from 'react-modal'
 
 export class LocationList extends Component {
     constructor (props) {
         super(props)
-        this.state = {}
+        this.state = {
+            showAddLocationModal: false,
+            showUpdateLocationModal: false,
+            showAddNoteModal: false,
+            showUpdateNoteModal: false
+        }
 
         this.populateUpdateForm = this.populateUpdateForm.bind(this)
         this.updateLocation = this.updateLocation.bind(this)
+        this.handleCloseModal = this.handleCloseModal.bind(this)
+        this.handleOpenAddLocationModal = this.handleOpenAddLocationModal.bind(this)
+        this.handleOpenUpdateLocationModal = this.handleOpenUpdateLocationModal.bind(this)
+        this.handleOpenUpdateNoteModal = this.handleOpenUpdateNoteModal.bind(this)
+
     }
 
     deleteLocation = (location) => {
         if (window.confirm("Delete location: " + location.name + " @ " + location.address)){
+            this.handleCloseModal()
             return fetch('https://tower-be.herokuapp.com/locations/' + location.id, {
                 method: 'DELETE',
                 headers: new Headers({
@@ -29,6 +41,7 @@ export class LocationList extends Component {
             latitude: location.latitude,
             longitude: location.longitude
         })
+        this.handleOpenUpdateLocationModal()
     }
 
     handleChange = (event) => {
@@ -38,9 +51,17 @@ export class LocationList extends Component {
 
     updateLocation = (event) => {
         event.preventDefault()
+        this.handleCloseModal()
         return fetch('https://tower-be.herokuapp.com/locations/' + this.state.id, {
             method: 'PUT',
-            body: JSON.stringify(this.state),
+            body: JSON.stringify({
+                name: this.state.name,
+                address: this.state.address,
+                business_type: this.state.business_type,
+                first_visit: this.state.first_visit,
+                latitude: this.state.latitude,
+                longitude: this.state.longitude
+            }),
             headers: new Headers({
                  'Content-Type': 'application/json'
             })
@@ -50,11 +71,19 @@ export class LocationList extends Component {
 
     createLocation = (event) => {
         event.preventDefault()
+        this.handleCloseModal()
         const date = new Date().toJSON().slice(0,10)
         this.setState({"first_visit": date })
         return fetch('https://tower-be.herokuapp.com/locations/', {
             method: 'POST',
-            body: JSON.stringify(this.state),
+            body: JSON.stringify({
+                name: this.state.name,
+                address: this.state.address,
+                business_type: this.state.business_type,
+                first_visit: this.state.first_visit,
+                latitude: this.state.latitude,
+                longitude: this.state.longitude
+            }),
             headers: new Headers({
                  'Content-Type': 'application/json'
             })
@@ -63,7 +92,9 @@ export class LocationList extends Component {
     }
 
     populateNoteForm = (location) => {
+
         this.setState({
+            showAddNoteModal: true,
             name: location.name,
             foreign_key: location.id,
             address: location.address,
@@ -72,6 +103,7 @@ export class LocationList extends Component {
 
     createNote = (event) => {
         event.preventDefault()
+        this.handleCloseModal()
         const date = new Date().toJSON().slice(0,10)
         this.setState({"visit_date": date })
         return fetch('https://tower-be.herokuapp.com/dropoff_details/', {
@@ -101,6 +133,7 @@ export class LocationList extends Component {
     }
 
     populateNoteUpdateForm = (detail, location) => {
+        this.handleOpenUpdateNoteModal ()
         this.setState({
             id: detail.id,
             foreign_key: detail.foreign_key,
@@ -110,11 +143,12 @@ export class LocationList extends Component {
             staff_name: detail.staff_name,
             visit_date: detail.visit_date.slice(0,10)
         })
+
     }
 
     updateNote = (event) => {
         event.preventDefault()
-        
+        this.handleCloseModal()
         return fetch('https://tower-be.herokuapp.com/dropoff_details/' + this.state.id, {
             method: 'PUT',
             body: JSON.stringify({
@@ -129,6 +163,31 @@ export class LocationList extends Component {
         }).then(response => response.json())
         .catch(error => console.error('Error', error))
     }
+
+    handleOpenAddLocationModal () {
+        this.setState({ showAddLocationModal: true })
+    }
+
+    handleOpenUpdateLocationModal () {
+        this.setState({ showUpdateLocationModal: true })
+    }
+
+    handleOpenAddNoteModal () {
+        this.setState({ showAddNoteModal: true })
+    }
+
+    handleOpenUpdateNoteModal () {
+        this.setState({ showUpdateNoteModal: true })
+    }
+
+    handleCloseModal () {
+        this.setState({ 
+            showAddLocationModal: false,
+            showUpdateLocationModal: false,
+            showAddNoteModal: false,
+            showUpdateNoteModal: false
+         });
+      }
 
     render () {
         const selectedPlace = this.props.selectedPlace
@@ -189,6 +248,7 @@ export class LocationList extends Component {
                 
                 <div className="location-list-title">
                     <h3>All Locations</h3>
+                    <button onClick={this.handleOpenAddLocationModal}>Add Location</button>
                 </div>
                 {this.props.locations.map(location => {
                     return (  
@@ -220,7 +280,11 @@ export class LocationList extends Component {
                     )
                 })}
             </ul>
-            <div className="location-forms-container">
+
+            <ReactModal
+                isOpen={this.state.showAddLocationModal}
+                className="modal"
+                contentLabel="Add Location Form">
             <div className="location-form-container">
                 <h3>Add Location</h3>
                 <form id="create-location-form" className="location-form" onSubmit={this.createLocation}>
@@ -234,9 +298,18 @@ export class LocationList extends Component {
                     <input type="float" id="create-location-latitude" name="latitude" onChange={this.handleChange} required /> 
                     <label htmlFor="longitude">Longitude</label>
                     <input type="float" id="create-location-longitude" name="longitude" onChange={this.handleChange} required /> 
-                    <button id="create-location-button" type="submit">Submit</button>
+                    <div className="form-buttons">
+                        <button id="create-location-button" type="submit">Submit</button>
+                        <button onClick={this.handleCloseModal}>Cancel</button>
+                    </div>
                 </form>
             </div>
+            </ReactModal>
+
+            <ReactModal
+                isOpen={this.state.showUpdateLocationModal}
+                className="modal"
+                contentLabel="Update Location Form">
             <div className="location-form-container">
                 <h3>Update Location</h3>
                 <form className="location-form" onSubmit={this.updateLocation}>
@@ -250,12 +323,18 @@ export class LocationList extends Component {
                     <input type="float" name="latitude" value={this.state.latitude} onChange={this.handleChange} required /> 
                     <label htmlFor="longitude">Longitude</label>
                     <input type="float" name="longitude"value={this.state.longitude} onChange={this.handleChange} required />
-                    <button type="submit" id="update-location-button">Submit</button>
+                    <div className="form-buttons">
+                        <button type="submit" id="update-location-button">Submit</button>
+                        <button onClick={this.handleCloseModal}>Cancel</button>
+                    </div>
                 </form>
             </div>
-            
-            </div>
-            <div className="note-forms-container">
+            </ReactModal>
+
+            <ReactModal
+                isOpen={this.state.showAddNoteModal}
+                className="modal"
+                contentLabel="Add Note Form">
             <div className="location-form-container">
                 <h3>Add Note</h3>
                 <div className="location-details">
@@ -267,9 +346,19 @@ export class LocationList extends Component {
                     <textarea cols="50" rows="10" name="comment" onChange={this.handleChange} required />
                     <label htmlFor="staff_name">Staff Name</label>
                     <input type="text" name="staff_name" onChange={this.handleChange} required />
-                    <button type="submit">Submit</button>
+                    <div className="form-buttons">
+                        <button type="submit">Submit</button>
+                        <button onClick={this.handleCloseModal}>Cancel</button>
+                    </div>
                 </form>   
             </div>
+            </ReactModal>
+
+
+            <ReactModal
+                isOpen={this.state.showUpdateNoteModal}
+                className="modal"
+                contentLabel="Update Note Form">
             <div className="location-form-container">
                 <h3>Update Note</h3>
                 <div className="location-details">
@@ -285,12 +374,14 @@ export class LocationList extends Component {
                     <textarea cols="50" rows="10" name="comment" value={this.state.comment} onChange={this.handleChange} required />
                     <label htmlFor="staff_name">Staff Name</label>
                     <input type="text" name="staff_name" value={this.state.staff_name} onChange={this.handleChange} required />
-                    <button type="submit">Submit</button>
+                    <div className="form-buttons">
+                        <button type="submit">Submit</button>
+                        <button onClick={this.handleCloseModal}>Cancel</button>
+                    </div>
                 </form>   
             </div>
+            </ReactModal>
             </div>
-            </div>
-
         ) 
     }
 }
