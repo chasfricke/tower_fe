@@ -74,23 +74,47 @@ h4 {
   color: white;
 }
 
+.location-list-title {
+  padding: 1rem;
+  color: white;
+}
 
 
 .locations-list {
-  padding-top: 50vh;
+  /* padding-top: 50vh; */
+  background-color: #222;
+  border-radius: 8px 8px 8px 8px;
+  padding-bottom: 1rem;
 }
 
 .location-card {
   border: solid 2px;
-  border-color: lightgray;
+  border-color: #222;
   padding: 0.5rem;
-  margin: 0.5rem;
+  margin: 1.5rem;
+  border-radius: 8px 8px 8px 8px;
+  background-color: white;
 }
 
 .location-card:hover {
   border: solid 2px;
-  
-  border-color: rgb(134, 134, 134);
+  border-color: white;
+  /* border-color: rgb(134, 134, 134); */
+}
+
+.location-card h3 {
+  padding-bottom: 0.2rem;
+}
+
+.location-card p {
+  padding-bottom: 0.3rem;
+}
+
+.location-card-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .location-form-container {
@@ -151,7 +175,52 @@ h4 {
 }
 
 .selected-place-title {
-  background-color: black;
+  padding: 1rem;
   color: white;
-  padding-left: 0.5rem;
+  
+}
+
+.selection-detail-container {
+  background-color: white;
+  padding: 1rem;
+  padding-right: 5rem;
+  padding-left: 5rem;
+  padding-top: 50vh;
+  
+}
+
+.selection-detail {
+  background-color: #222;
+  border-radius: 8px 8px 8px 8px;
+  padding-bottom: 1rem;
+  margin-top: 1rem;
+  
+}
+
+.selection-detail h3 {
+  padding-bottom: 0.2rem;
+}
+
+.selection-detail p {
+  padding-bottom: 0.3rem;
+}
+
+.form-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.form-buttons button {
+  margin: 1rem;
+}
+
+.modal {
+  background-color: white;
+  height: auto;
+  width: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }

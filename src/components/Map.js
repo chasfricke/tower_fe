@@ -8,7 +8,7 @@ export class GoogleMap extends Component {
         this.state = {
             showingInfoWindow: false,
             activeMarker: {},
-            selectedPlace: {},
+            selectedPlace: {}
         }
     }
 
