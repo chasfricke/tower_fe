@@ -196,9 +196,9 @@ export class LocationList extends Component {
             selectionDetail = 
             <div className="selection-detail-container">
                 <div className="selection-detail">
-                    <div className="selected-place-title">
+                    {/* <div className="selected-place-title">
                         <h3>Map Selection</h3>
-                    </div>
+                    </div> */}
                     <div className="location-card">
                         <p>No Location Selected</p>
                     </div>
