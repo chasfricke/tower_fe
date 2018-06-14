@@ -183,8 +183,6 @@ h4 {
 .selection-detail-container {
   background-color: white;
   padding: 1rem;
-  padding-right: 5rem;
-  padding-left: 5rem;
   padding-top: 50vh;
   
 }
@@ -192,7 +190,8 @@ h4 {
 .selection-detail {
   background-color: #222;
   border-radius: 8px 8px 8px 8px;
-  padding-bottom: 1rem;
+  padding-bottom: 0.25rem;
+  padding-top: 0.25rem;
   margin-top: 1rem;
   
 }
